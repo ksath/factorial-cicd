@@ -14,4 +14,4 @@ def test_factorial_5():
 
 
 def test_factorial_10():
-    assert factorial(10) == 3628801
+    assert factorial(10) == 3628800
