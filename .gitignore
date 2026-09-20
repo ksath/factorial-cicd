@@ -1,13 +1,49 @@
-# Python bytecode
-__pycache__/
-*.pyc
+name: Factorial CI
 
-# Virtual environment
-.venv/
-venv/
+on:
+  push:
+    branches:
+      - main
 
-# Environment variables / secrets
-.env
+jobs:
 
-# VS Code settings
-.vscode/
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest
+
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create build package
+        run: |
+          mkdir build
+          cp factorial.py build/
+          cp requirements.txt build/
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: factorial-build
+          path: build/
